@@ -25,6 +25,7 @@ const OTPGenerator = ({ setOtp, setStep, setUsername, username }) => {
         placeholder="Username..."
         required
         onChange={changeUsernameHandler}
+        maxLength={10}
       ></input>
       <button type="submit">Generate OTP</button>
     </form>

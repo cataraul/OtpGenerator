@@ -126,6 +126,7 @@ const OTPInput = ({
     setStep("initialStep");
     setUserOtpValue("");
     setTries(0);
+    clearTimeout();
   };
 
   const submitOTPHandler = (e) => {
