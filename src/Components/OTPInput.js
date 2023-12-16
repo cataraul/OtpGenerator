@@ -1,11 +1,20 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import "./OTPInput.css";
 
-const OTPInput = ({ value, valueLength, onChange }) => {
+const OTPInput = ({
+  otp,
+  valueLength,
+  onChange,
+  setStep,
+  setOtp,
+  availableTime,
+  userOTPValue,
+}) => {
+  const [showError, setShowError] = useState(false);
   const regex_number = new RegExp(/^\d+$/);
 
   const valueItems = useMemo(() => {
-    const valuesArr = value.split("");
+    const valuesArr = userOTPValue.split("");
     const items = [];
     for (let i = 0; i < valueLength; i++) {
       const char = valuesArr[i];
@@ -17,7 +26,7 @@ const OTPInput = ({ value, valueLength, onChange }) => {
       }
     }
     return items;
-  }, [value, valueLength]);
+  }, [userOTPValue, valueLength]);
 
   const goToNextSibling = (target) => {
     const nextElementSibling = target.nextElementSibling;
@@ -42,12 +51,25 @@ const OTPInput = ({ value, valueLength, onChange }) => {
       return;
     }
 
+    const nextInputElement = e.target.nextElementSibling;
+
+    // only delete digit if next input element has no value
+    if (
+      !regex_number.test(targetValue) &&
+      nextInputElement &&
+      nextInputElement.value !== ""
+    ) {
+      return;
+    }
+
     targetValue = regex_number.test(targetValue) ? targetValue : " ";
 
     //if 1 is not pasting
     if (targetValue.length === 1) {
       const newValue =
-        value.substring(0, index) + targetValue + value.substring(index + 1);
+        userOTPValue.substring(0, index) +
+        targetValue +
+        userOTPValue.substring(index + 1);
 
       onChange(newValue);
 
@@ -86,29 +108,63 @@ const OTPInput = ({ value, valueLength, onChange }) => {
   };
 
   const onFocusInput = (e) => {
+    // keep focusing back until previous input element has value
+    const prevInputElement = e.target.previousElementSibling;
+
+    if (prevInputElement && prevInputElement.value === "") {
+      return prevInputElement.focus();
+    }
     e.target.setSelectionRange(0, e.target.value.length);
   };
 
+  const goBackHandler = () => {
+    setOtp("");
+    setStep("initialStep");
+  };
+
+  const submitOTPHandler = (e) => {
+    e.preventDefault();
+    console.log(otp);
+    if (availableTime && userOTPValue !== otp) {
+      setShowError(true);
+      return;
+    }
+    if (availableTime && userOTPValue === otp) {
+      setStep("verifiedOTP");
+      return;
+    } else {
+      setStep("failedOTP");
+      return;
+    }
+  };
+
   return (
-    <div className="otp-container">
-      {valueItems.map((digit, index) => {
-        return (
-          <input
-            type="text"
-            key={index}
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            pattern="\d{1}"
-            maxLength={valueLength}
-            className="otp-input"
-            value={digit}
-            onChange={(e) => onChangeHandler(e, index)}
-            onKeyDown={onKeyDownInput}
-            onFocus={onFocusInput}
-          />
-        );
-      })}
-    </div>
+    <>
+      {showError && <p className="error">Wrong OTP, try again!</p>}
+      <form className="otp-container" onSubmit={submitOTPHandler}>
+        {valueItems.map((digit, index) => {
+          return (
+            <input
+              type="text"
+              key={index}
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              pattern="\d{1}"
+              maxLength={valueLength}
+              className="otp-input"
+              value={digit}
+              onChange={(e) => onChangeHandler(e, index)}
+              onKeyDown={onKeyDownInput}
+              onFocus={onFocusInput}
+            />
+          );
+        })}
+        <button type="submit">Verify</button>
+      </form>
+      <button onClick={goBackHandler} className="go-back-button">
+        Go back{" "}
+      </button>
+    </>
   );
 };
 

@@ -15,3 +15,10 @@
   font-weight: 700;
   line-height: 1;
 }
+.go-back-button {
+  margin-top: 15px;
+}
+
+.error {
+  color: red;
+}
