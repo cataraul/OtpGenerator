@@ -9,6 +9,7 @@ function App() {
   const [step, setStep] = useState("");
   const [availableTime, setAvailableTime] = useState(true);
   const [username, setUsername] = useState("");
+  const [tries, setTries] = useState(0);
   const onChange = (value) => setUserOtpValue(value);
 
   useEffect(() => {
@@ -55,6 +56,9 @@ function App() {
             availableTime={availableTime}
             setAvailableTime={setAvailableTime}
             userOTPValue={userOTPValue}
+            setUserOtpValue={setUserOtpValue}
+            tries={tries}
+            setTries={setTries}
           />
         </>
       )}

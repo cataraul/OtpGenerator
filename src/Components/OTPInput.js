@@ -9,8 +9,12 @@ const OTPInput = ({
   setOtp,
   availableTime,
   userOTPValue,
+  setUserOtpValue,
+  tries,
+  setTries,
 }) => {
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Wrong OTP, try again!");
   const regex_number = new RegExp(/^\d+$/);
 
   const valueItems = useMemo(() => {
@@ -54,13 +58,13 @@ const OTPInput = ({
     const nextInputElement = e.target.nextElementSibling;
 
     // only delete digit if next input element has no value
-    if (
-      !regex_number.test(targetValue) &&
-      nextInputElement &&
-      nextInputElement.value !== ""
-    ) {
-      return;
-    }
+    // if (
+    //   !regex_number.test(targetValue) &&
+    //   nextInputElement &&
+    //   nextInputElement.value !== ""
+    // ) {
+    //   return;
+    // }
 
     targetValue = regex_number.test(targetValue) ? targetValue : " ";
 
@@ -120,10 +124,15 @@ const OTPInput = ({
   const goBackHandler = () => {
     setOtp("");
     setStep("initialStep");
+    setUserOtpValue("");
+    setTries(0);
   };
 
   const submitOTPHandler = (e) => {
     e.preventDefault();
+    if (tries >= 3) {
+      setErrorMessage("Oops, too many attempts!");
+    }
     console.log(otp);
     if (availableTime && userOTPValue !== otp) {
       setShowError(true);
@@ -140,7 +149,7 @@ const OTPInput = ({
 
   return (
     <>
-      {showError && <p className="error">Wrong OTP, try again!</p>}
+      {showError && <p className="error">{errorMessage}</p>}
       <form className="otp-container" onSubmit={submitOTPHandler}>
         {valueItems.map((digit, index) => {
           return (
@@ -156,13 +165,16 @@ const OTPInput = ({
               onChange={(e) => onChangeHandler(e, index)}
               onKeyDown={onKeyDownInput}
               onFocus={onFocusInput}
+              disabled={tries >= 3}
             />
           );
         })}
-        <button type="submit">Verify</button>
+        <button type="submit" onClick={() => setTries((prev) => prev + 1)}>
+          Verify
+        </button>
       </form>
       <button onClick={goBackHandler} className="go-back-button">
-        Go back{" "}
+        Go back
       </button>
     </>
   );
