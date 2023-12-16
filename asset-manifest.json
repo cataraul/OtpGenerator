@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/OtpGenerator/static/css/main.80ee52d1.css",
-    "main.js": "/OtpGenerator/static/js/main.182b8772.js",
+    "main.css": "/OtpGenerator/static/css/main.88cc1423.css",
+    "main.js": "/OtpGenerator/static/js/main.e9794f3a.js",
     "static/js/787.8220a012.chunk.js": "/OtpGenerator/static/js/787.8220a012.chunk.js",
     "index.html": "/OtpGenerator/index.html",
-    "main.80ee52d1.css.map": "/OtpGenerator/static/css/main.80ee52d1.css.map",
-    "main.182b8772.js.map": "/OtpGenerator/static/js/main.182b8772.js.map",
+    "main.88cc1423.css.map": "/OtpGenerator/static/css/main.88cc1423.css.map",
+    "main.e9794f3a.js.map": "/OtpGenerator/static/js/main.e9794f3a.js.map",
     "787.8220a012.chunk.js.map": "/OtpGenerator/static/js/787.8220a012.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.80ee52d1.css",
-    "static/js/main.182b8772.js"
+    "static/css/main.88cc1423.css",
+    "static/js/main.e9794f3a.js"
   ]
 }
