@@ -67,6 +67,7 @@ function App() {
               setStep("initialStep");
               setUsername("");
               setUserOtpValue("");
+              setAvailableTime(true);
             }}
           >
             Try Again!
@@ -82,6 +83,7 @@ function App() {
               setOtp("");
               setStep("initialStep");
               setUserOtpValue("");
+              setAvailableTime(true);
             }}
           >
             Try Again!
